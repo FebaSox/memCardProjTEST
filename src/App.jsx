@@ -1,43 +1,31 @@
-import { useState, Component} from 'react'
-import './App.css'
+import React, { useState } from 'react';
 import Game from './Components/Game';
 import Header from './Components/Header';
+import Prompts from './Components/Prompts';
+import './App.css';
 
+function App() {
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
 
-class App extends Component {
-  constructor() {
-    super();
+  const handleScoreUpdate = (newScore) => {
+    setScore(newScore);
+    if (newScore > bestScore) {
+      setBestScore(newScore);
+    }
+  };
 
-    this.state = {
-      items: [],
-      currentScore: 0,
-      bestScore: 0,
-    };
-    this.handleScore = this.handleScore.bind(this);
-  }
+  const handleGameOver = () => {
+    setScore(0);
+  };
 
-handleScore(increment) {
-  console.log('handleScore', increment);
-  if(increment) {
-    this.setState({
-      currentScore: this.state.currentScore + 1,
-    });
-  } else {
-    this.setState({
-      currentScore: 0,
-    });
-  }
-}
-
-  render() {
-    const { currentScore, bestScore } = this.state;
-    return (
-      <div className='App'>
-        <Header currentScore={currentScore} bestScore={bestScore}/>
-        <Game />
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <Header score={score} bestScore={bestScore} />
+      <Prompts />
+      <Game onScoreUpdate={handleScoreUpdate} onGameOver={handleGameOver} />
+    </div>
+  );
 }
 
 export default App;

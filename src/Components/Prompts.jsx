@@ -1,19 +1,18 @@
-import React, { Component } from "react";
+import React from 'react';
 
-class Prompt extends Component {
-  render() {
-    const { item, handleAnswer, index } = this.props;
-    return (
-      <div>
-        <p>Have you everrrrr seeeen the rainnnnn</p>
-        <div className="d-flex justify-content-around align-items-center">
-          <button onClick={(e) => handleAnswer(e, index, false)}>Yes</button>
-          <button onClick={(e) => handleAnswer(e, index, false)}>No</button>
-        </div>
+function Prompts() {
+  return (
+    <div className="prompts">
+      <div className="prompt-card">
+        <h2>How to Play</h2>
+        <p>Click on an item you haven't clicked before. Don't click the same item twice!</p>
       </div>
-    );
-  }
+      <div className="prompt-card">
+        <h2>Game Over</h2>
+        <p>If you click an item twice, the game will restart. Try to beat your best score!</p>
+      </div>
+    </div>
+  );
 }
 
-
-export default Prompt;
+export default Prompts;

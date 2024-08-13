@@ -1,21 +1,15 @@
-import { Component } from 'react';
+import React from 'react';
 
-class Header extends Component {
-    render() {
-        const { currentScore, bestScore } = this.props;
-        return (
-            <header className='App-header'>
-                <div className='d-flex justify-content-around align-items-center'>
-                     <p>Current Score</p>
-                    <p>{currentScore}</p>
-                </div>
-                <div className='d-flex justify-content-around align-items-center'>
-                     <p>Best Score</p>
-                    <p>{bestScore}</p>
-                </div>
-            </header>
-        );
-    }
+function Header({ score, bestScore }) {
+  return (
+    <header>
+      <h1>Memory Game</h1>
+      <div className="scoreboard">
+        <p>Current Score: {score}</p>
+        <p>Best Score: {bestScore}</p>
+      </div>
+    </header>
+  );
 }
 
 export default Header;

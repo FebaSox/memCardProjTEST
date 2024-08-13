@@ -1,68 +1,48 @@
-import React, { Component } from "react";
-import Prompt from './Prompts.jsx';
+import React, { useState, useEffect } from 'react';
 
-const items = [];
+const items = [
+  'Apple', 'Banana', 'Cherry', 'Date', 'Elderberry',
+  'Fig', 'Grape', 'Honeydew', 'Kiwi', 'Lemon'
+];
 
-for (let i = 65; i < 75; i++) {
-    items.push({
-        id: i,
-        content: String.fromCharCode(i),
-        displayed: false,
-    })
+function shuffleArray(array) {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
 }
 
-class Game extends Component {
-    constructor(props) {
-        super(props);
+function Game({ onScoreUpdate, onGameOver }) {
+  const [gameItems, setGameItems] = useState([]);
+  const [clickedItems, setClickedItems] = useState([]);
 
-        this.state = {
-            items,
-        };
+  useEffect(() => {
+    setGameItems(shuffleArray(items));
+  }, []);
 
-        this.handleAnswer = this.handleAnswer.bind(this);
+  const handleItemClick = (item) => {
+    if (clickedItems.includes(item)) {
+      onGameOver();
+      setClickedItems([]);
+    } else {
+      const newClickedItems = [...clickedItems, item];
+      setClickedItems(newClickedItems);
+      onScoreUpdate(newClickedItems.length);
     }
+    setGameItems(shuffleArray(items));
+  };
 
-handleAnswer(event, item, index, answer) {
-    //Compare item.display with answer
-   console.log(item.displayed, answer);
-    this.props.handleScore(item.displayed === answer);
-
-    //Change the item that is displayed
-    //If the shown item hasn't been displayed/ Changed display property to true
-    {
-const items = this.state.items.map(i => {
-    if (i === item) {
-        if (i.displayed) {
-            return i;
-        } else {
-            i.displayed = true;
-            return i;
-        } 
-    } else return i;
-});
-    this.setState({ items });
-    }
+  return (
+    <div className="game-board">
+      {gameItems.map((item, index) => (
+        <div key={index} className="game-card" onClick={() => handleItemClick(item)}>
+          {item}
+        </div>
+      ))}
+    </div>
+  );
 }
-
-    randomItemIndex() {
-        let rand = Math.floor(Math.random() - items.length);
-        return rand;
-    }
-    
-
-    render() {
-        const { items } = this.state;
-        const item = this.randomItemIndex();
-       // const index = items[i];
-        
-        return (
-            <main className="d-flex justify-content-around align-items-centers">
-                <p id={items.indexOf(item)}>{item.content}</p>
-                <Prompt item={item} handleAnswer={this.handleAnswer} />
-            </main>
-        );
-    }
-}
-
 
 export default Game;
